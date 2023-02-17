@@ -13,12 +13,12 @@ ship - <a href="https://www.freepik.com/free-vector/rocket-sky_4923760.htm#query
 
 """
 
-import sys
-
 import pygame
+from pygame.sprite import Group
 
 from settings import Settings   # Module with settings for a game
 from ship import Ship   # Module with a ship
+import game_functions as gf
 
 
 def run_game():
@@ -29,19 +29,14 @@ def run_game():
     screen = pygame.display.set_mode(
         (ai_settings.screen_width, ai_settings.screen_height))
     pygame.display.set_caption("Alien Invasion")
-    ship = Ship(screen)
+    ship = Ship(ai_settings, screen)
+    bullets = Group()
     # Start the main loop for the game.
     while True:
-
-        # Watch for keyboard and mouse events
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                sys.exit()
-
-        screen.fill(ai_settings.bg_color)   # Redraw the screen during each pass through the loop.
-        ship.blitme()
-
-        pygame.display.flip()   # Make the most recently drawn screen visible.
+        gf.check_events(ai_settings, screen, ship, bullets)   # Check for keyboard or mouse events
+        ship.update()
+        bullets.update()
+        gf.update_screen(ai_settings, screen, ship)    # Updating screen with every loop
 
 
 run_game()
