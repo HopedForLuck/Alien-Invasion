@@ -29,15 +29,20 @@ def run_game():
     screen = pygame.display.set_mode(
         (ai_settings.screen_width, ai_settings.screen_height))
     pygame.display.set_caption("Alien Invasion")
+
     ship = Ship(ai_settings, screen)
+
     bullets = Group()   # Group that stores bullets
+    aliens = Group()  # Group that stores aliens
+
+    gf.create_fleet(ai_settings, screen, aliens)
 
     # Start the main loop for the game.
     while True:
         gf.check_events(ai_settings, screen, ship, bullets)   # Check for keyboard or mouse events
         ship.update()
         gf.update_bullets(bullets)
-        gf.update_screen(ai_settings, screen, ship, bullets)    # Updating screen with every loop
+        gf.update_screen(ai_settings, screen, ship, aliens, bullets)    # Updating screen with every loop
 
 
 run_game()
